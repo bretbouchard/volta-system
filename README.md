@@ -1,8 +1,10 @@
-# Volta System
+# Volta System Atlas
 
 **From intent to manufacturable electronics — with evidence, constraints, and validation at every step.**
 
-Volta is an AI-native electronics design system for turning requirements into real schematics, PCBs, and manufacturing outputs. The implementation is private; this repository documents the public architecture, engineering model, validation philosophy, and representative execution flow behind the system.
+This repository is the public **System Atlas** for Volta. It documents the architecture, engineering model, validation philosophy, representative execution flow, and selected implementation evidence behind the private production system.
+
+Volta is an AI-native electronics design system for turning requirements into real schematics, PCBs, and manufacturing outputs.
 
 ## Why Volta exists
 
@@ -146,15 +148,21 @@ The important behavior is that a model may propose the fix, but only new evidenc
 
 ## Relationship to GSA
 
-Volta is a domain application of [GSA — Governed Stewardship Architecture](https://github.com/bretbouchard/gsa-system): controlled model access to authoritative state, explicit tools, durable memory, unknown discovery, specialist review, sequenced work, evidence, and governed side effects.
+Volta is a domain application of the [GSA System Atlas — Governed Stewardship Architecture](https://github.com/bretbouchard/gsa-system): controlled model access to authoritative state, explicit tools, durable memory, unknown discovery, specialist review, sequenced work, evidence, and governed side effects.
 
 Volta adds electronics-specific rigor because small requirement changes can alter the final physical product, component selection, routing, cost, compliance, or manufacturability.
 
-## What this public repository is
+## What this System Atlas contains
 
-This is an architectural and product-facing repository.
+Public here:
 
-It intentionally does **not** contain:
+- system boundaries and design rationale
+- technology and integration choices
+- validation and evidence patterns
+- representative execution flows
+- selected implementation evidence
+
+Kept private:
 
 - proprietary implementation code
 - internal training data
@@ -163,8 +171,6 @@ It intentionally does **not** contain:
 - production credentials
 - unpublished product details
 
-The purpose is to make the system understandable and technically evaluable without turning the public repository into a mirror of the private product codebase.
-
 ## Status
 
-Volta is under active development. The production implementation is maintained privately.
+Volta is under active development. The production implementation is maintained privately; this repository is its public System Atlas.
