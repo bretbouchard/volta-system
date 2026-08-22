@@ -2,7 +2,7 @@
 
 **From intent to manufacturable electronics — with evidence, constraints, and validation at every step.**
 
-Volta is an AI-native electronics design system for turning requirements into real schematics, PCBs, and manufacturing outputs. The implementation is private; this repository documents the public architecture, engineering model, and validation philosophy behind the system.
+Volta is an AI-native electronics design system for turning requirements into real schematics, PCBs, and manufacturing outputs. The implementation is private; this repository documents the public architecture, engineering model, validation philosophy, and representative execution flow behind the system.
 
 ## Why Volta exists
 
@@ -13,6 +13,7 @@ A plausible-looking schematic can still be electrically wrong. A valid schematic
 Volta therefore treats the model as a **planner and problem-solving component**, not the source of truth.
 
 The system owns:
+
 - requirements
 - design state
 - component facts
@@ -51,6 +52,53 @@ Manufacturing package
 Human approval / release
 ```
 
+## What is implemented behind this public surface
+
+The private implementation combines AI orchestration with real EDA and manufacturing workflows rather than treating PCB generation as a text-generation problem.
+
+Its engineering surface includes:
+
+- Python-based orchestration and domain tooling
+- structured circuit and PCB representations
+- explicit design operations and transactional rollback patterns
+- electrical-rule and design-rule validation
+- circuit simulation against acceptance criteria
+- component and manufacturing data sources
+- placement and routing orchestration
+- local multimodal inference on Apple Silicon
+- electronics-specific model adaptation/training workflows
+- automated tests across mutation, validation, simulation, and artifact generation
+- BOM and fabrication/assembly artifact generation
+
+The source, private datasets, internal component data, and production implementation remain private.
+
+## Agent + tool boundary
+
+```text
+Model / Specialist
+       |
+       | structured proposal or tool call
+       v
+Tool Contract
+       |
+       v
+Authorization / Policy
+       |
+       v
+Domain Operation
+       |
+       v
+Authoritative Design-State Mutation
+       |
+       v
+Deterministic Verification
+       |
+       v
+Evidence + Decision Record
+```
+
+The model is valuable for ambiguity reduction, planning, investigation, diagnosis, and strategy. It cannot clear its own verification failures or declare its own proposed design correct.
+
 ## Design principles
 
 ### 1. Requirements survive the whole project
@@ -64,6 +112,7 @@ A model may propose a circuit, choose a component, recommend a route, or explain
 ### 3. Hard gates beat confident prose
 
 Where a deterministic check exists, Volta uses it:
+
 - electrical-rule checks
 - simulation
 - design-rule checks
@@ -81,17 +130,23 @@ Missing information is not silently guessed. The workflow identifies unresolved 
 
 Design decisions retain the requirement, evidence, alternatives, constraint, and outcome that caused them.
 
-## System layers
+## Representative case study
 
-See [system/ARCHITECTURE.md](system/ARCHITECTURE.md) for the public architecture.
+See [Requirement to Verified Board](examples/REQUIREMENT_TO_BOARD.md) for a public example of how a requirement moves through unknown discovery, design-state mutation, failed simulation, model diagnosis, deterministic re-verification, PCB validation, and governed release.
 
-See [workflow/REQUIREMENTS_AND_EVIDENCE.md](workflow/REQUIREMENTS_AND_EVIDENCE.md) for long-term requirement tracking.
+The important behavior is that a model may propose the fix, but only new evidence clears the gate.
 
-See [workflow/VALIDATION_PIPELINE.md](workflow/VALIDATION_PIPELINE.md) for the verification model.
+## System documentation
+
+- [Public Architecture](system/ARCHITECTURE.md)
+- [Agent and Tool Integration Model](system/INTEGRATION_MODEL.md)
+- [Requirements and Evidence](workflow/REQUIREMENTS_AND_EVIDENCE.md)
+- [Validation Pipeline](workflow/VALIDATION_PIPELINE.md)
+- [Requirement to Verified Board](examples/REQUIREMENT_TO_BOARD.md)
 
 ## Relationship to GSA
 
-Volta is a domain application of the same governed-agent principles used across the broader GSA architecture: controlled model access to state, explicit tools, durable memory, unknown discovery, specialist review, sequenced work, and governed side effects.
+Volta is a domain application of [GSA — Governed Stewardship Architecture](https://github.com/bretbouchard/gsa-system): controlled model access to authoritative state, explicit tools, durable memory, unknown discovery, specialist review, sequenced work, evidence, and governed side effects.
 
 Volta adds electronics-specific rigor because small requirement changes can alter the final physical product, component selection, routing, cost, compliance, or manufacturability.
 
@@ -100,6 +155,7 @@ Volta adds electronics-specific rigor because small requirement changes can alte
 This is an architectural and product-facing repository.
 
 It intentionally does **not** contain:
+
 - proprietary implementation code
 - internal training data
 - private component databases
@@ -107,7 +163,7 @@ It intentionally does **not** contain:
 - production credentials
 - unpublished product details
 
-The purpose is to show how Volta is designed and why the system is structured this way.
+The purpose is to make the system understandable and technically evaluable without turning the public repository into a mirror of the private product codebase.
 
 ## Status
 
